@@ -11,8 +11,8 @@ export const UserInfo = () => {
             loading,
             loginState, 
             handleUserInfo, 
-            user,
-            handleStopLoad} = useContext(GlobalContext);
+            user
+        } = useContext(GlobalContext);
 
         // const [loading, setloading] = useState(true)
         // handleLogCheck()

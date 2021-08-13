@@ -1,4 +1,4 @@
-import React, { Component, createContext, useReducer } from 'react'
+import React, { createContext, useReducer } from 'react'
 import axios from 'axios'
 import AppReducer from './AppReducer';
 
@@ -48,8 +48,9 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const handleLogIn = (token) => {
+        console.log("handleLogIn");
         localStorage.setItem('accessToken',token)
-        localStorage.setItem('refreshToken',token)
+        // localStorage.setItem('refreshToken',token)
         dispatch({
                 type: 'HANDLE_LOG_IN',
                 payload: true
@@ -57,18 +58,22 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const handleCheckLog = () => {
+        console.log("handleCheckLog");
         let token = localStorage.getItem("accessToken")
-        if (token === null){
+        if (token == null){
+            console.log("not logged");
             dispatch({
                 type: 'HANDLE_CHECK_LOG',
                 payload: false
             });
         }
         if (token != null){
+            console.log("logged");
             dispatch({
                 type: 'HANDLE_CHECK_LOG',
                 payload: true
             });
+            handleLogIn(token)
         }
     }
 
@@ -84,6 +89,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const handleUserInfo = () => {
+        console.log("handleUserInfo");
         const config = {
             headers: { 
                 'authorization':`Bearer ${localStorage.getItem('accessToken')}`,
@@ -93,6 +99,7 @@ export const GlobalProvider = ({ children }) => {
         axios
             .get(`http://localhost:8090/api/v1/users/own/info`,config)
             .then(res => {
+                console.log("suc");
                 console.log(res);
                 dispatch({
                     type: 'HANDLE_USER_INFO',
@@ -152,7 +159,8 @@ export const GlobalProvider = ({ children }) => {
                 handleLogOut,
                 handleUserInfo,
                 handleZones,
-                
+                handleCheckLog,
+
             }}>
             {children}
         </GlobalContext.Provider>);

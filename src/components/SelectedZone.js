@@ -11,9 +11,8 @@ export const SelectedZone = () => {
         loginState, 
         zones, 
         IDclick, 
-        zoneKol,
-        handleLogCheck,
-        handleZones} = useContext(GlobalContext);
+        zoneKol
+    } = useContext(GlobalContext);
     
     // handleLogCheck()
     if(IDclick >0 && IDclick <= zoneKol){

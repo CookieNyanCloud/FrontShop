@@ -1,4 +1,4 @@
-import React, {useContext, Redirect} from 'react';
+import React, {useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -45,7 +45,7 @@ export const  SignUp = ()  => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [redirect, setRedirect] = useState(false)
+    // const [redirect, setRedirect] = useState(false)
 
     const submit = async (e) => {
         e.preventDefault()

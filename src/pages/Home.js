@@ -3,17 +3,23 @@ import Hero from '../components/Hero'
 import Banner from '../components/Banner'
 import ShopMap from '../components/ShopMap'
 import SelectedZone from '../components/SelectedZone'
+import { useContext, useEffect } from "react";
 import { GlobalContext } from '../context/GlobalState'
-import { useContext} from "react";
 
 
-// import { Link } from 'react-router-dom'
+
 
 export  const Home = () => {
 
-    // const {handleZones} = useContext(GlobalContext);
+    const { handleCheckLog } = useContext(GlobalContext);
 
-    // handleZones()
+    useEffect(() => {
+        handleCheckLog()
+        // return () => {
+            
+        // }
+    }, [])
+    
     return (
         <div>
             <Hero>
