@@ -57,7 +57,7 @@ export const GlobalProvider = ({ children }) => {
             });
     }
 
-    const handleCheckLog = () => {
+    const handleCheckLog = () => {g
         console.log("handleCheckLog");
         let token = localStorage.getItem("accessToken")
         if (token == null){
