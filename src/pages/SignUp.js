@@ -58,7 +58,6 @@ export const  SignUp = ()  => {
                 console.log("1",loginState);
                 handleLogIn(res.data.accessToken,res.data.refreshToken)    
                 console.log("4",loginState);
-                setRedirect(true)
             }
         })
         .catch( error => {
@@ -67,12 +66,12 @@ export const  SignUp = ()  => {
         })
         
     }
-    if (redirect) {
-        return <Redirect push to={{
-            pathname: '/home',
-        }}
-                />
-    }  
+    // if (redirect) {
+    //     return <Redirect push to={{
+    //         pathname: '/home',
+    //     }}
+    //             />
+    // }  
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />

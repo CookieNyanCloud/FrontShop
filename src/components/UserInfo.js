@@ -20,10 +20,8 @@ export const UserInfo = () => {
         console.log(loading);
         handleUserInfo()
         console.log(loading);
-
-        // setloading(false)
-        // handleStopLoad()
-        console.log(user);
+        console.log(localStorage.getItem("accessToken"))
+        console.log("!!!!!",user);
         let {name, email } = user
         let zones = user.taken
         if(!loading&&loginState){

@@ -56,6 +56,24 @@ export const GlobalProvider = ({ children }) => {
             });
     }
 
+    const handleCheckLog = () => {
+        let token = localStorage.getItem("accessToken")
+        if (token === null){
+            dispatch({
+                type: 'HANDLE_CHECK_LOG',
+                payload: false
+            });
+        }
+        if (token != null){
+            dispatch({
+                type: 'HANDLE_CHECK_LOG',
+                payload: true
+            });
+        }
+    }
+
+
+
     const handleLogOut = () => {
         localStorage.removeItem("accessToken");
         dispatch({
@@ -66,15 +84,14 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const handleUserInfo = () => {
-        console.log(localStorage.getItem('accessToken'));
         const config = {
-                headers: { 
-                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'Content-Type': 'application/json'
-                }
+            headers: { 
+                'authorization':`Bearer ${localStorage.getItem('accessToken')}`,
+                'Content-Type':'application/json'
             }
+        }
         axios
-            .get(`http://localhost:8090/api/v1/users/info`,config)
+            .get(`http://localhost:8090/api/v1/users/own/info`,config)
             .then(res => {
                 console.log(res);
                 dispatch({
