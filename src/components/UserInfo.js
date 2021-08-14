@@ -10,16 +10,13 @@ export const UserInfo = () => {
         const {
             loading,
             loginState, 
-            handleUserInfo, 
+            // handleUserInfo, 
             user
         } = useContext(GlobalContext);
-
-        // const [loading, setloading] = useState(true)
-        // handleLogCheck()
         console.log("FFFFFFFFFFFFFFFFFff");
-        console.log(loading);
-        handleUserInfo()
-        console.log(loading);
+        // console.log(loading);
+        // // handleUserInfo()
+        // console.log(loading);
         console.log(localStorage.getItem("accessToken"))
         console.log("!!!!!",user);
         let {name, email } = user

@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export const  SignIn = ({ context }) =>  {
+export const  SignIn = () =>  {
   const classes = useStyles();
-  let {handleSignin} = useContext(GlobalContext);
+  let {handleLogIn} = useContext(GlobalContext);
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -50,11 +50,9 @@ export const  SignIn = ({ context }) =>  {
         {email,password})
         .then(res => {
             if(res.status===200){
-                handleSignin()               
-                localStorage.setItem(
-                    'accessToken',
-                    res.data.accessToken)
-                document.location.href = "/";
+                console.log(res);
+                handleLogIn(res.data)                 
+                // document.location.href = "/";
             }
         })
         .catch( error => {
@@ -132,137 +130,12 @@ export const  SignIn = ({ context }) =>  {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+      {/* <Box mt={8}> */}
         {/* <Copyright /> */}
-      </Box>
+      {/* </Box> */}
     </Container>
   );
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // function SignIn({ context }) {
-//   const classes = useStyles();
-//   let {handleSignin} = context
-
-//     const [email, setEmail] = useState("")
-//     const [password, setPassword] = useState("")
-
-//     const submit = async (e) => {
-//         e.preventDefault()
-//         axios
-//         .post(`http://localhost:8090/api/v1/users/sign-in`, 
-//         {email,password})
-//         .then(res => {
-//             if(res.status===200){
-//                 handleSignin()               
-//                 localStorage.setItem(
-//                     'accessToken',
-//                     res.data.accessToken)
-//                 document.location.href = "/";
-//             }
-//         })
-//         .catch( error => {
-//             console.log(error);
-//         })
-        
-//     }
-
-
-
-
-//   return (
-//     <Container component="main" maxWidth="xs">
-//       <CssBaseline />
-//       <div className={classes.paper}>
-//         <Avatar className={classes.avatar}>
-//           <LockOutlinedIcon />
-//         </Avatar>
-//         <Typography component="h1" variant="h5">
-//           Sign in
-//         </Typography>
-//         <form 
-//         className={classes.form} 
-//         noValidate
-//         onSubmit={submit}
-//         >
-//           <TextField
-//             variant="outlined"
-//             margin="normal"
-//             required
-//             fullWidth
-//             id="email"
-//             label="Email Address"
-//             name="email"
-//             autoComplete="email"
-//             autoFocus
-//             onChange={e => setEmail(e.target.value)}
-//           />
-//           <TextField
-//             variant="outlined"
-//             margin="normal"
-//             required
-//             fullWidth
-//             name="password"
-//             label="Password"
-//             type="password"
-//             id="password"
-//             autoComplete="current-password"
-//             onChange={e => setPassword(e.target.value)}
-//           />
-//           {/* <FormControlLabel
-//             control={<Checkbox value="remember" color="primary" />}
-//             label="Remember me"
-//           /> */}
-//           <Button
-//             type="submit"
-//             fullWidth
-//             variant="contained"
-//             color="primary"
-//             className={classes.submit}
-//           >
-//             Sign In
-//           </Button>
-//           <Grid container>
-//             <Grid item xs>
-//               <Link href="#" variant="body2">
-//                 Forgot password?
-//               </Link>
-//             </Grid>
-//             <Grid item>
-//               <Link href="/sign-up" variant="body2">
-//                 {"Don't have an account? Sign Up"}
-//               </Link>
-//             </Grid>
-//           </Grid>
-//         </form>
-//       </div>
-//       <Box mt={8}>
-//         {/* <Copyright /> */}
-//       </Box>
-//     </Container>
-//   );
-// }
-// export default withDataConsumer(SignIn);

@@ -47,40 +47,34 @@ export const GlobalProvider = ({ children }) => {
             });
     }
 
-    const handleLogIn = (token) => {
-        console.log("handleLogIn");
-        localStorage.setItem('accessToken',token)
-        // localStorage.setItem('refreshToken',token)
+    const handleLogIn = (tokens) => {
+        localStorage.setItem('accessToken',tokens.accessToken)
+        localStorage.setItem('refreshToken',tokens.refreshToken)
         dispatch({
                 type: 'HANDLE_LOG_IN',
                 payload: true
             });
     }
 
-    const handleCheckLog = () => {g
-        console.log("handleCheckLog");
-        let token = localStorage.getItem("accessToken")
-        if (token == null){
-            console.log("not logged");
+    const handleCheckLog = () => {
+        let accessToken = localStorage.getItem("accessToken")
+        if (accessToken == null){
             dispatch({
                 type: 'HANDLE_CHECK_LOG',
                 payload: false
             });
         }
-        if (token != null){
-            console.log("logged");
+        if (accessToken != null){
             dispatch({
                 type: 'HANDLE_CHECK_LOG',
                 payload: true
             });
-            handleLogIn(token)
         }
     }
 
-
-
     const handleLogOut = () => {
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         dispatch({
                 type: 'HANDLE_LOG_Out',
                 payload: false
@@ -89,7 +83,6 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const handleUserInfo = () => {
-        console.log("handleUserInfo");
         const config = {
             headers: { 
                 'authorization':`Bearer ${localStorage.getItem('accessToken')}`,
@@ -99,25 +92,26 @@ export const GlobalProvider = ({ children }) => {
         axios
             .get(`http://localhost:8090/api/v1/users/own/info`,config)
             .then(res => {
-                console.log("suc");
-                console.log(res);
                 dispatch({
                     type: 'HANDLE_USER_INFO',
                     payload: res.data.user
                 });
             })
             .catch( error => {
-                console.log("AAAA");
                 console.log(error);
             })   
     }
 
-    const handleZones = () => {
-        console.log("HZ");
+    const handleZones = () => {        
+        const config = localStorage.getItem('accessToken')? {
+            headers: { 
+                'authorization':`Bearer ${localStorage.getItem('accessToken')}`,
+                'Content-Type':'application/json'
+            }
+        }: null
         axios
-        .get(`http://localhost:8090/api/v1/zones/`)
+        .get(`http://localhost:8090/api/v1/zones/`,config)
         .then(res => {
-            console.log("HZD");
             dispatch({
                 type: 'HANDLE_ZONES',
                 payload: {
@@ -135,7 +129,6 @@ export const GlobalProvider = ({ children }) => {
                     zonesDidLoad: false
                 }
             });
-            console.log("HZE");
             console.log(error);
         })        
     }

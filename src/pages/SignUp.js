@@ -55,9 +55,7 @@ export const  SignUp = ()  => {
         .then(res => {
             if(res.status===201){
                 console.log(res.data);
-                console.log("1",loginState);
-                handleLogIn(res.data.accessToken,res.data.refreshToken)    
-                console.log("4",loginState);
+                handleLogIn(res.data)    
             }
         })
         .catch( error => {
