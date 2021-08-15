@@ -1,6 +1,9 @@
 import React, { createContext, useReducer } from 'react'
 import axios from 'axios'
 import AppReducer from './AppReducer';
+import { ErrorSharp } from '@material-ui/icons';
+
+
 
 
 
@@ -20,6 +23,27 @@ export const GlobalProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
+
+    const handleRefresh = () => {
+        console.log(localStorage.getItem('refreshToken'));
+        const config = localStorage.getItem('refreshToken')? {
+            headers: { 
+                'refreshToken':`${localStorage.getItem('refreshToken')}`,
+                'ContentType':'application/json'
+            }
+        }: null
+        console.log(config.headers);
+        axios
+        .post(`http://localhost:8090/api/v1/users/auth/refresh`,null,config)
+        // .get(`http://localhost:8090/api/v1/users/auth/refresh`,config)
+        .then(res => {
+            console.log("TYTA");
+            handleLogIn(res.data)
+        })
+        .catch( error => {
+            console.log(error)
+        })   
+    }  
 
     const handleStartLoad = () => {
         dispatch({
@@ -59,10 +83,7 @@ export const GlobalProvider = ({ children }) => {
     const handleCheckLog = () => {
         let accessToken = localStorage.getItem("accessToken")
         if (accessToken == null){
-            dispatch({
-                type: 'HANDLE_CHECK_LOG',
-                payload: false
-            });
+            handleLogOut()
         }
         if (accessToken != null){
             dispatch({
@@ -122,14 +143,20 @@ export const GlobalProvider = ({ children }) => {
             handleStopLoad()
         })
         .catch( error => {
-            dispatch({
+            if (error.response.status === 401){
+                let token = localStorage.getItem('refreshToken')
+                handleRefresh()
+            }else{
+                dispatch({
                 type: 'HANDLE_ZONES',
                 payload: {
                     zones: {},
                     zonesDidLoad: false
                 }
             });
-            console.log(error);
+                console.log(error);
+            }
+            
         })        
     }
 
