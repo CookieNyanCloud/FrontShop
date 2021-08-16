@@ -1,11 +1,6 @@
 import React, { createContext, useReducer } from 'react'
 import axios from 'axios'
 import AppReducer from './AppReducer';
-import { ErrorSharp } from '@material-ui/icons';
-
-
-
-
 
 const initialState={
         zones:[],
@@ -15,8 +10,10 @@ const initialState={
         loading: true,
         IDclick:0,
         zoneKol:6,
-        zonesDidLoad:true
+        zonesDidLoad:true,
+        infoDidLoad:true
 }
+
 export const GlobalContext = createContext(initialState);
 
 export const GlobalProvider = ({ children }) => {
@@ -25,24 +22,29 @@ export const GlobalProvider = ({ children }) => {
 
 
     const handleRefresh = () => {
-        console.log(localStorage.getItem('refreshToken'));
-        const config = localStorage.getItem('refreshToken')? {
+
+        console.log(localStorage.getItem('refreshToken'))
+        
+        const config = localStorage.getItem('refreshToken')
+        ?{
             headers: { 
                 'refreshToken':`${localStorage.getItem('refreshToken')}`,
                 'ContentType':'application/json'
             }
-        }: null
+        }
+        : null
+
         console.log(config.headers);
+        
         axios
         .post(`http://localhost:8090/api/v1/users/auth/refresh`,null,config)
-        // .get(`http://localhost:8090/api/v1/users/auth/refresh`,config)
         .then(res => {
-            console.log("TYTA");
             handleLogIn(res.data)
         })
         .catch( error => {
             console.log(error)
         })   
+        
     }  
 
     const handleStartLoad = () => {
@@ -82,10 +84,10 @@ export const GlobalProvider = ({ children }) => {
 
     const handleCheckLog = () => {
         let accessToken = localStorage.getItem("accessToken")
-        if (accessToken == null){
+        if (accessToken === null){
             handleLogOut()
         }
-        if (accessToken != null){
+        if (accessToken !== null){
             dispatch({
                 type: 'HANDLE_CHECK_LOG',
                 payload: true
@@ -104,23 +106,39 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const handleUserInfo = () => {
-        const config = {
+        const config = localStorage.getItem('accessToken')? {
             headers: { 
                 'authorization':`Bearer ${localStorage.getItem('accessToken')}`,
                 'Content-Type':'application/json'
             }
-        }
+        }: null
         axios
             .get(`http://localhost:8090/api/v1/users/own/info`,config)
             .then(res => {
+                console.log(res.data.userInfo);
                 dispatch({
                     type: 'HANDLE_USER_INFO',
-                    payload: res.data.user
+                    payload: {
+                        user: res.data.userInfo,
+                        loading: false
+                    }
                 });
             })
             .catch( error => {
+                if (error.response.status === 401){
+                    handleRefresh()
+                }else{
+                    dispatch({
+                        type: 'HANDLE_ZONES',
+                        payload: {
+                            zones: {},
+                            zonesDidLoad: false
+                        }
+                });
                 console.log(error);
-            })   
+            }
+            
+        })        
     }
 
     const handleZones = () => {        
@@ -133,18 +151,22 @@ export const GlobalProvider = ({ children }) => {
         axios
         .get(`http://localhost:8090/api/v1/zones/`,config)
         .then(res => {
+                            console.log("GGGGG",res);
+
             dispatch({
                 type: 'HANDLE_ZONES',
                 payload: {
                     zones: res.data.data,
                     zonesDidLoad: true
+
                 }
             });
+            // console.log("@@@@@@@@@@@");
+            // console.log(this.zonesDidLoad);
             handleStopLoad()
         })
         .catch( error => {
             if (error.response.status === 401){
-                let token = localStorage.getItem('refreshToken')
                 handleRefresh()
             }else{
                 dispatch({
@@ -171,6 +193,8 @@ export const GlobalProvider = ({ children }) => {
                 loading: state.loading,
                 IDclick:state.IDclick,
                 zoneKol:state.zoneKol,
+                zonesDidLoad:state.zonesDidLoad,
+                infoDidLoad:state.infoDidLoad,
 
                 handleStartLoad,
                 handleStopLoad,

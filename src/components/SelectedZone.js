@@ -5,7 +5,6 @@ import Loading from './Loading'
 import TableZone from './TableZone'
 
 export const SelectedZone = () => {
-    console.log("SZ");
     const {
         loading, 
         loginState, 

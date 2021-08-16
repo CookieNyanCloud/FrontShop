@@ -2,6 +2,12 @@
 export default (state, action) => {
     switch(action.type) {
 
+    case 'HANDLE_CHECK_LOG':
+        return {
+            ...state,
+            loginState: action.payload
+        }
+
     case 'HANDLE_START_LOAD':
         return {
             ...state,
@@ -29,8 +35,8 @@ export default (state, action) => {
     case 'HANDLE_USER_INFO':
         return {
             ...state,
-            loading:false,
-            user: action.payload
+            loading:action.payload.loading,
+            user: action.payload.user
         }
 
     case 'HANDLE_ZONES':

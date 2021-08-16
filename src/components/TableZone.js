@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom'
 
 export const TableZone = ({zone,login}) => {
     
-    console.log("TZ");
 
     const {eventid, id, price, taken} = zone
     

@@ -10,17 +10,11 @@ export const UserInfo = () => {
         const {
             loading,
             loginState, 
-            // handleUserInfo, 
             user
         } = useContext(GlobalContext);
-        console.log("FFFFFFFFFFFFFFFFFff");
-        // console.log(loading);
-        // // handleUserInfo()
-        // console.log(loading);
-        console.log(localStorage.getItem("accessToken"))
-        console.log("!!!!!",user);
-        let {name, email } = user
-        let zones = user.taken
+
+        let {username, email } = user
+        let zones = user.zone
         if(!loading&&loginState){
             return (
                 <section> 
@@ -34,7 +28,7 @@ export const UserInfo = () => {
                                     <th>zones</th>
                                 </tr>
                                 <tr>
-                                    <td>{name}</td>
+                                    <td>{username}</td>
                                     <td>{email}</td>
                                     <td>{zones}</td>
                                 </tr>
