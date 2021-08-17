@@ -17,7 +17,7 @@ export const Navbar = () => {
         // return () => {
         //     cleanup
         // }
-    }, [])
+    }, [loginState])
     
     return (
             <nav className="navbar">

@@ -125,7 +125,7 @@ export const GlobalProvider = ({ children }) => {
                 });
             })
             .catch( error => {
-                if (error.response.status === 401){
+                if (error?.response?.status === 401){
                     handleRefresh()
                 }else{
                     dispatch({
@@ -166,7 +166,7 @@ export const GlobalProvider = ({ children }) => {
             handleStopLoad()
         })
         .catch( error => {
-            if (error.response.status === 401){
+            if (error?.response?.status === 401){
                 handleRefresh()
             }else{
                 dispatch({
