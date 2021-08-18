@@ -99,7 +99,7 @@ export const GlobalProvider = ({ children }) => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         dispatch({
-                type: 'HANDLE_LOG_Out',
+                type: 'HANDLE_LOG_OUT',
                 payload: false
             });
 

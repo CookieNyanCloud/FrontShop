@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import axios from 'axios'
 import { GlobalContext } from "../context/GlobalState";
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -45,6 +46,7 @@ export const  SignUp = ()  => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [redirect,setRedirect] = useState(false)
     // const [redirect, setRedirect] = useState(false)
 
     const submit = async (e) => {
@@ -54,22 +56,20 @@ export const  SignUp = ()  => {
         {name,email,password})
         .then(res => {
             if(res.status===201){
-                console.log(res.data);
                 handleLogIn(res.data)    
+                setRedirect(true)
             }
         })
         .catch( error => {
-            console.log("Sign-up error");
             console.log(error);
         })
         
     }
-    // if (redirect) {
-    //     return <Redirect push to={{
-    //         pathname: '/home',
-    //     }}
-    //             />
-    // }  
+
+    if(redirect){
+        return <Redirect to="/"/>
+    }
+    
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />

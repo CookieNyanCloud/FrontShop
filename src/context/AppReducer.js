@@ -32,6 +32,12 @@ export default (state, action) => {
             loginState:action.payload
         }
 
+    case 'HANDLE_LOG_OUT':
+        return {
+            ...state,
+            loginState:action.payload
+        }
+
     case 'HANDLE_USER_INFO':
         return {
             ...state,

@@ -14,9 +14,6 @@ export const Navbar = () => {
 
     useEffect(() => {
         handleCheckLog()
-        // return () => {
-        //     cleanup
-        // }
     }, [loginState])
     
     return (

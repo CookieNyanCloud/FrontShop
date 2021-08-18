@@ -13,6 +13,8 @@ import Container from '@material-ui/core/Container';
 import { useState, useContext } from 'react';
 import axios from 'axios'
 import { GlobalContext } from "../context/GlobalState";
+import { Redirect } from 'react-router-dom';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +44,8 @@ export const  SignIn = () =>  {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [redirect,setRedirect] = useState(false)
+
 
     const submit = async (e) => {
         e.preventDefault()
@@ -50,9 +54,8 @@ export const  SignIn = () =>  {
         {email,password})
         .then(res => {
             if(res.status===200){
-                console.log(res);
                 handleLogIn(res.data)                 
-                // document.location.href = "/";
+                setRedirect(true)
             }
         })
         .catch( error => {
@@ -61,6 +64,10 @@ export const  SignIn = () =>  {
         
     }
 
+
+    if(redirect){
+        return <Redirect to="/"/>
+    }
 
 
 

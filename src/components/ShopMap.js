@@ -12,6 +12,10 @@ export const ShopMap = () => {
         handleZones,
     } = useContext(GlobalContext);
 
+    useEffect(() => {
+        handleZones()
+    }, [])
+
     console.log(zonesDidLoad);
     useEffect(() => {
         handleZones()
@@ -35,7 +39,7 @@ export const ShopMap = () => {
             })
         }
 
-    }, [])
+    }, [IDclick])
 
     return (
             <div>
