@@ -7,6 +7,8 @@ import {Error} from './pages/Error'
 import {Contacts} from './pages/Contacts'
 import {SignUp} from './pages/SignUp'
 import {SignIn} from './pages/SignIn';
+import {SignInAdmin} from './pages/SignInAdmin';
+import {Admin} from './pages/Admin';
 import {Navbar} from './components/Navbar'
 import {Copyright} from './components/Copyright';
 import { GlobalProvider } from './context/GlobalState';
@@ -23,6 +25,8 @@ function App() {
           <Route path="/userpage" component={UserPage} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-in-admin" component={SignInAdmin} />
+          <Route path="/admin" component={Admin} />
           <Route component={Error}/>
         </Switch>
         <Copyright/>
