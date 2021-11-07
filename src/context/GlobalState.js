@@ -2,19 +2,23 @@ import React, { createContext, useReducer } from 'react'
 import axios from 'axios'
 import AppReducer from './Appreducer'
 
+const baseURL = 'http://localhost:8090'
+
 const initialState = {
   mainEvent: [],
   user: [],
   events: [],
   loginState: false,
   IDclick: 0,
-  zoneKol: 0,
+  error: [],
+  // zoneKol: 0,
 }
 
 export const GlobalContext = createContext(initialState)
 
 const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
+  // todo:loading
 
   const handleClick = (event) => {
     const target = event.target
@@ -37,6 +41,14 @@ const GlobalProvider = ({ children }) => {
     })
   }
 
+  const handleLogOut = () => {
+    localStorage.removeItem('accessToken')
+    dispatch({
+      type: 'HANDLE_LOG_OUT',
+      payload: false,
+    })
+  }
+
   const handleCheckLog = () => {
     let accessToken = localStorage.getItem('accessToken')
     if (accessToken === null) {
@@ -50,14 +62,6 @@ const GlobalProvider = ({ children }) => {
     }
   }
 
-  const handleLogOut = () => {
-    localStorage.removeItem('accessToken')
-    dispatch({
-      type: 'HANDLE_LOG_OUT',
-      payload: false,
-    })
-  }
-
   const handleUserInfo = () => {
     const config = localStorage.getItem('accessToken')
       ? {
@@ -68,14 +72,13 @@ const GlobalProvider = ({ children }) => {
         }
       : null
     axios
-      .get(`http://localhost:8090/api/v1/users/own/info`, config)
+      .get(`${baseURL}/api/v1/users/account/page`, config)
       .then((res) => {
-        console.log(res.data.userInfo)
         dispatch({
           type: 'HANDLE_USER_INFO',
           payload: {
-            user: res.data.userInfo,
-            loading: false,
+            userEmail: res.data.user_email,
+            zones: res.data.zones,
           },
         })
       })
@@ -83,10 +86,9 @@ const GlobalProvider = ({ children }) => {
         if (error?.response?.status === 401) {
         } else {
           dispatch({
-            type: 'HANDLE_ZONES',
+            type: 'ERROR',
             payload: {
-              zones: {},
-              zonesDidLoad: false,
+              error: error,
             },
           })
           console.log(error)
@@ -94,42 +96,25 @@ const GlobalProvider = ({ children }) => {
       })
   }
 
-  const handleZones = () => {
-    const config = localStorage.getItem('accessToken')
-      ? {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      : null
+  const handleFirstEvent = () => {
     axios
-      .get(`http://localhost:8090/api/v1/zones/`, config)
+      .get(`${baseURL}/api/v1/events/first`)
       .then((res) => {
-        console.log('GGGGG', res)
-
         dispatch({
-          type: 'HANDLE_ZONES',
+          type: 'HANDLE_FIRST_EVENT',
           payload: {
-            zones: res.data.data,
-            zonesDidLoad: true,
+            event: res.data.data,
           },
         })
-        // console.log("@@@@@@@@@@@");
-        // console.log(this.zonesDidLoad);
       })
       .catch((error) => {
-        if (error?.response?.status === 401) {
-        } else {
-          dispatch({
-            type: 'HANDLE_ZONES',
-            payload: {
-              zones: {},
-              zonesDidLoad: false,
-            },
-          })
-          console.log(error)
-        }
+        dispatch({
+          type: 'ERROR',
+          payload: {
+            error: error,
+          },
+        })
+        console.log(error)
       })
   }
 
@@ -150,7 +135,7 @@ const GlobalProvider = ({ children }) => {
         handleLogIn,
         handleLogOut,
         handleUserInfo,
-        handleZones,
+        handleFirstEvent,
         handleCheckLog,
       }}
     >

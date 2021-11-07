@@ -1,23 +1,6 @@
 export default (state, action) => {
+  // todo:loading
   switch (action.type) {
-    case 'HANDLE_CHECK_LOG':
-      return {
-        ...state,
-        loginState: action.payload,
-      }
-
-    case 'HANDLE_START_LOAD':
-      return {
-        ...state,
-        loading: action.payload,
-      }
-
-    case 'HANDLE_STOP_LOAD':
-      return {
-        ...state,
-        loading: action.payload,
-      }
-
     case 'HANDLE_CLICK':
       return {
         ...state,
@@ -36,21 +19,25 @@ export default (state, action) => {
         loginState: action.payload,
       }
 
+    case 'HANDLE_CHECK_LOG':
+      return {
+        ...state,
+        loginState: action.payload,
+      }
+
     case 'HANDLE_USER_INFO':
       return {
         ...state,
-        loading: action.payload.loading,
         user: action.payload.user,
       }
 
-    case 'HANDLE_ZONES':
+    case 'HANDLE_FIRST_EVENT':
       return {
         ...state,
-        zones: action.payload.zones,
-        zonesDidLoad: action.payload.zonesDidLoad,
+        event: action.payload.event,
       }
 
-    case 'TRANSACTION_ERROR':
+    case 'ERROR':
       return {
         ...state,
         error: action.payload,
